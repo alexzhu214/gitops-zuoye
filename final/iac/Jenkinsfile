@@ -1,0 +1,35 @@
+pipeline {
+    agent none
+    stages {
+        stage('Deploy to Kubernetes') {
+            when {
+                changeset "**/iac/*.yaml"
+            }
+        
+        agent {
+            kubernetes {
+                defaultContainer 'kubectl'
+                yaml """
+kind: Pod
+spec:
+  serviceAccountName: jenkins
+  containers:
+  - name: kubectl
+    image: jitesoft/kubectl:v1.28
+    imagePullPolicy: Always
+    command:
+    - sleep
+    args:
+    - 86400
+"""
+                }
+            }
+
+            steps {
+                container('kubectl') {
+                    sh 'kubectl apply -f iac/*.yaml'
+                }
+            }
+        }
+    }
+}
