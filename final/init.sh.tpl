@@ -27,10 +27,10 @@ kubectl apply -f /tmp/jenkins-service-account.yaml -n jenkins
 #kubectl apply -f /tmp/harbor-url-secret.yaml -n jenkins
 
 # jenkins github personal access token
-#kubectl apply -f /tmp/github-personal-token.yaml -n jenkins
+kubectl apply -f /tmp/github-personal-token.yaml -n jenkins
 
 # jenkins github server(system) pat secret
-#kubectl apply -f /tmp/github-pat-secret-text.yaml -n jenkins
+kubectl apply -f /tmp/github-pat-secret-text.yaml -n jenkins
 
 # install jenkins helm
 helm upgrade -i jenkins jenkins/jenkins -n jenkins --create-namespace -f /tmp/jenkins-values.yaml --version "4.6.1"
@@ -53,3 +53,17 @@ helm upgrade --install -n argocd argocd argo/argo-cd --version "5.36.6" -f /tmp/
 
 
 #kubectl create secret generic docker-credentials --from-file=config.json=/tmp/docker-credentials.json --dry-run=client -o yaml | kubectl apply -f -
+
+# install crossplane 
+helm repo add crossplane-stable https://charts.crossplane.io/stable
+helm upgrade -i crossplane \
+--namespace crossplane-system \
+--create-namespace crossplane-stable/crossplane \
+--version "1.14.0" \
+--wait
+
+kubectl apply -f /tmp/tf-provider.yaml -n crossplane-system
+
+kubectl apply -f /tmp/providerConfig.yaml -n crossplane-system
+
+kubectl apply -f /tmp/argocd-applicationset.yaml -n argocd

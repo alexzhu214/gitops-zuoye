@@ -43,7 +43,15 @@ variable "argocd_password" {
   default = "password123"
 }
 
+# github
+variable "github_username" {
+  default = ""
+}
 
+# change me!
+variable "github_personal_token" {
+  default = ""
+}
 
 # Default variables
 
@@ -76,4 +84,12 @@ variable "domain" {
 
 variable "prefix" {
   default = "8424"
+}
+
+variable "secret_id" {
+  default = "Your Access ID"
+}
+
+variable "secret_key" {
+  default = "Your Access Key"
 }
