@@ -26,5 +26,5 @@ data:
     option httpchk
     http-check send meth GET uri / ver HTTP/1.1 hdr Host bookinfo.example.local
     http-check expect status 200
-    server cluster2 124.156.160.164:80 check weight 80
-    server cluster3 43.128.24.229:80 check weight 20
+    server cluster2 43.129.22.50:80 check weight 50
+    server cluster3 124.156.135.41:80 check weight 50
